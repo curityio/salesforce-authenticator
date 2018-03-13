@@ -41,8 +41,8 @@ Creating an App in Salesforce
 
 Create a connected app if you haven’t already done so.
 
-    * In Salesforce Classic, from Setup, enter Apps in the Quick Find box, select **Apps** (under **Build** | **Create**), then click the name of the connected app.
-    * In Lightning Experience, from Setup, enter Apps in the Quick Find box, select App Manager, click Action dropdown, and then select Edit.
+* In Salesforce Classic, from Setup, enter Apps in the Quick Find box, select **Apps** (under **Build** | **Create**), then click the name of the connected app.
+* In Lightning Experience, from Setup, enter Apps in the Quick Find box, select App Manager, click Action dropdown, and then select Edit.
 
     .. figure:: docs/images/create-salesforce-app.png
         :name: doc-create-salesforce-app.png-app
@@ -66,7 +66,7 @@ URI Component                  Meaning
 ``authenticationEndpointPath`` The path of the authentication endpoint. In the admin GUI, this is located in the
                                authentication profile's ``Endpoints`` tab for the endpoint that has the type
                                ``auth-authentication``.
-``salesforceAuthenticatorId``   This is the name given to the Salesforce authenticator when defining it
+``salesforceAuthenticatorId``  This is the name given to the Salesforce authenticator when defining it
                                (e.g., ``salesforce1``).
 ============================== ============================================================================================
 
@@ -112,7 +112,7 @@ The Salesforce specific configuration is generated dynamically based on the `con
         .. figure:: docs/images/http-client.png
 
 
-8. In the ``Client ID`` textfield, enter the ``Client ID`` from the Salesforce client app.
+8. In the ``Client ID`` textfield, enter the ``Consumer key`` from the Salesforce client app.
 9. Also enter the matching ``Client Secret``.
 10. If you wish to limit the scopes that Curity will request of Salesforce, toggle on the desired scopes (e.g., ``Chatter Api`` or ``Custom Permissions``).
 
