@@ -1,14 +1,19 @@
 package io.curity.identityserver.plugin.salesforce.authentication
 
 import geb.spock.GebReportingSpec
-import io.curity.identityserver.plugin.salesforce.authentication.SalesforceLoginPage
-import io.curity.identityserver.plugin.salesforce.authentication.SignupResultPage
 import spock.lang.Requires
 
+import static io.curity.identityserver.plugin.salesforce.authentication.Preconditions.isIdshAvailable
+import static io.curity.identityserver.plugin.salesforce.authentication.Preconditions.getIsSalesForceClientSecretDefined
+
+@Requires( { isIdshAvailable && isSalesForceClientSecretDefined })
 class SalesforceAuthenticationIT extends GebReportingSpec {
     private static String clientSecretKeyPath = "/profiles/profile{authentication auth:authentication-service}/settings/auth:authentication-service/authenticators/authenticator{salesforce1}/salesforce:salesforce/client-id"
 
     def setupSpec() {
+        //def p = "idsh -s".execute()
+        //p.in.withReader { "configure" }
+        
         // Setup config
         // idsh <<< "configure
         // load merge foo.xml
@@ -19,7 +24,6 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
         // Rollback
     }
 
-    @Requires({  System.getenv("CLIENT_SECRET") != null })
     def "Salesforce Login success test"() {
         given: "go to login page"
         to SalesforceLoginPage
