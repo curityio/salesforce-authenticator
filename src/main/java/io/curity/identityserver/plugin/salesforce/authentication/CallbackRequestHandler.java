@@ -131,7 +131,8 @@ public class CallbackRequestHandler implements AuthenticatorRequestHandler<Callb
                 SubjectAttributes.of(userId, Attributes.of(subjectAttributes)),
                 ContextAttributes.of(Attributes.of(contextAttributes)));
         AuthenticationResult authenticationResult = new AuthenticationResult(attributes);
-        return Optional.ofNullable(authenticationResult);
+
+        return Optional.of(authenticationResult);
     }
 
     private Map<String, Object> redeemCodeForTokens(CallbackRequestModel requestModel)
@@ -236,7 +237,7 @@ public class CallbackRequestHandler implements AuthenticatorRequestHandler<Callb
 
         data.entrySet().forEach(e -> appendParameter(stringBuilder, e));
 
-        return HttpRequest.fromString(stringBuilder.toString());
+        return HttpRequest.fromString(stringBuilder.toString(), StandardCharsets.UTF_8);
     }
 
     private static void appendParameter(StringBuilder stringBuilder, Map.Entry<String, String> entry)
