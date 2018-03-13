@@ -1,0 +1,23 @@
+<config xmlns="http://tail-f.com/ns/config/1.0">
+    <profiles xmlns="https://curity.se/ns/conf/base">
+        <profile>
+            <id>authentication</id>
+            <type xmlns:auth="https://curity.se/ns/conf/profile/authentication">auth:authentication-service</type>
+            <settings>
+                <authentication-service xmlns="https://curity.se/ns/conf/profile/authentication">
+                    <authenticators>
+                        <authenticator>
+                            <id>salesforce1</id>
+                            <salesforce xmlns="https://curity.se/ns/ext-conf/salesforce">
+                                <client-id>salesforce1</client-id>
+                                <!--<client-secret>set programmatically</client-secret>-->
+                                <!--<full-access>true</full-access>-->
+                                <!--<chatter-api>true</chatter-api>-->
+                            </salesforce>
+                        </authenticator>
+                    </authenticators>
+                </authentication-service>
+            </settings>
+        </profile>
+    </profiles>
+</config>

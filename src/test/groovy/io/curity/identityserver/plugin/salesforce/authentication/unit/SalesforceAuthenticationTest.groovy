@@ -1,4 +1,4 @@
-package io.curity.identityserver.plguin.salesforce.authentication
+package io.curity.identityserver.plugin.salesforce.authentication.unit
 
 import spock.lang.Specification
 
