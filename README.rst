@@ -1,8 +1,8 @@
 Salesforce Authenticator Plug-in
 ================================
 
-.. image:: https://travis-ci.org/curityio/identityserver.plugins.authenticators.salesforce-authenticator.svg?branch=dev
-     :target: https://travis-ci.org/curityio/identityserver.plugins.authenticators.salesforce-authenticator
+.. image:: https://travis-ci.org/curityio/salesforce-authenticator.svg?branch=master
+     :target: https://travis-ci.org/curityio/salesforce-authenticator
 
 This project provides an opens source Salesforce Authenticator plug-in for the Curity Identity Server. This allows an administrator to add functionality to Curity which will then enable end users to login using their Salesforce credentials. The app that integrates with Curity may also be configured to receive the Salesforce access token and refresh token, allowing it to manage resources in Salesforce.
 
@@ -25,36 +25,37 @@ The source is very easy to compile. To do so from a shell, issue this command: `
 Installation
 ~~~~~~~~~~~~
 
-To install this plug-in, either download a binary version available from the `releases section of this project's GitHub repository <https://github.com/curityio/identityserver.plugins.authenticators.salesforce-authenticator/releases>`_ or compile it from source (as described above). If you compiled the plug-in from source, the package will be placed in the ``target`` subdirectory. The resulting JAR file or the one downloaded from GitHub needs to placed in the directory ``${IDSVR_HOME}/usr/share/plugins/identityserver.plugins.authenticators.salesforce``. (The name of the last directory, ``identityserver.plugins.authenticators.salesforce``, which is the plug-in group, is arbitrary and can be anything.) After doing so, the plug-in will become available as soon as the node is restarted.
+To install this plug-in, either download a binary version available from the `releases section of this project's GitHub repository <https://github.com/curityio/salesforce-authenticator/releases>`_ or compile it from source (as described above). If you compiled the plug-in from source, the package will be placed in the ``target`` subdirectory. The resulting JAR file or the one downloaded from GitHub needs to placed in the directory ``${IDSVR_HOME}/usr/share/plugins/salesforce``. (The name of the last directory, ``salesforce``, which is the plug-in group, is arbitrary and can be anything.) After doing so, the plug-in will become available as soon as the node is restarted.
 
 .. note::
 
-    The JAR file needs to be deployed to each run-time node and the admin node. For simple test deployments where the admin node is a run-time node, the JAR file only needs to be copied to one location.
+The JAR file needs to be deployed to each run-time node and the admin node. For simple test deployments where the admin node is a run-time node, the JAR file only needs to be copied to one location.
 
 For a more detailed explanation of installing plug-ins, refer to the `Curity developer guide <https://developer.curity.io/docs/latest/developer-guide/plugins/index.html#plugin-installation>`_.
 
 Creating an App in Salesforce
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As `described in the Salesforce documentation <https://developer.identityserver.plugins.authenticators.salesforce.com/docs/oauth2>`_, you can `create apps <https://www.identityserver.plugins.authenticators.salesforce.com/developer/apps>`_ that use the Salesforce APIs as shown in the following figure:
+`Setting up OAuth 2.0 <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/quickstart.htm>`_ requires that you take some steps within Salesforce and in other locations. If any of the steps are unfamiliar,
+ see `Understanding Authentication <https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_understanding_authentication.htm>`_.
 
-    .. figure:: docs/images/create-identityserver.plugins.authenticators.salesforce-app.png
-        :name: doc-new-identityserver.plugins.authenticators.salesforce-app
+Create a connected app if you haven’t already done so.
+
+    * In Salesforce Classic, from Setup, enter Apps in the Quick Find box, select **Apps** (under **Build** | **Create**), then click the name of the connected app.
+    * In Lightning Experience, from Setup, enter Apps in the Quick Find box, select App Manager, click Action dropdown, and then select Edit.
+
+    .. figure:: docs/images/create-salesforce-app.png
+        :name: doc-create-salesforce-app.png-app
         :align: center
         :width: 500px
 
 
+When you click Save, the ``Consumer Key`` is created and displayed, and a ``Consumer Secret`` is created (click the link to reveal it).
+The ``Consumer Key`` and ``Consumer Secret`` refers to ``Client ID`` and ``Client Secret`` respectively.
 
-    .. figure:: docs/images/create-identityserver.plugins.authenticators.salesforce-app1.png
-        :name: new-identityserver.plugins.authenticators.salesforce-app
-        :align: center
-        :width: 500px
 
-    Fill in all the required information as shown in above image.
-
-When you view the app's configuration after creating it, you'll find the ``Client ID`` and ``Client Secret``. These will be needed later when configuring the plug-in in Curity.
-
-Salesforce will also display the ``Authorized Redirect URLs`` in the new app's configuration. One of these need to match the yet-to-be-created Salesforce authenticator instance in Curity. The default will not work, and, if used, will result in an error. This should be updated to some URL that follows the pattern ``$baseUrl/$authenticationEndpointPath/$identityserver.plugins.authenticators.salesforceAuthnticatorId/callback``, where each of these URI components has the following meaning:
+Click **Enable OAuth Settings** and specify your callback URL and OAuth scopes. The Callback URL need to match the yet-to-be-created Salesforce authenticator instance in Curity.
+The default will not work, and, if used, will result in an error. This should be updated to some URL that follows the pattern ``$baseUrl/$authenticationEndpointPath/$salesforceAuthnticatorId/callback``, where each of these URI components has the following meaning:
 
 ============================== ============================================================================================
 URI Component                  Meaning
@@ -66,18 +67,15 @@ URI Component                  Meaning
                                authentication profile's ``Endpoints`` tab for the endpoint that has the type
                                ``auth-authentication``.
 ``salesforceAuthenticatorId``   This is the name given to the Salesforce authenticator when defining it
-                               (e.g., ``identityserver.plugins.authenticators.salesforce1``).
+                               (e.g., ``salesforce1``).
 ============================== ============================================================================================
 
-    .. figure:: docs/images/create-identityserver.plugins.authenticators.salesforce-app2.png
-        :align: center
-        :width: 500px
 
-    It could be helpful to also enable additional scopes. Scopes are the Salesforce-related rights or permissions that the app is requesting. If the final application (not Curity, but the downstream app) is going to perform actions using the Salesforce API, additional scopes probably should be enabled. Refer to the `Salesforce documentation on scopes <https://developer.atlassian.com/cloud/identityserver.plugins.authenticators.salesforce/identityserver.plugins.authenticators.salesforce-cloud-rest-api-scopes>`_ for an explanation of those that can be enabled and what they allow.
+It could be helpful to also enable additional scopes. Scopes are the Salesforce-related rights or permissions that the app is requesting. If the final application (not Curity, but the downstream app) is going to perform actions using the Salesforce API, additional scopes probably should be enabled. Refer to the `Salesforce documentation on scopes <https://help.salesforce.com/articleView?id=remoteaccess_oauth_scopes.htm&type=0>`_ for an explanation of those that can be enabled and what they allow.
 
 .. warning::
 
-    If the app configuration in Salesforce does not allow a certain scope (e.g., the ``Read Email Address`` scope) but that scope is enabled in the authenticator in Curity, a server error will result. For this reason, it is important to align these two configurations or not to define any when configuring the plug-in in Curity.
+    If the app configuration in Salesforce does not allow a certain scope (e.g., the ``api`` scope) but that scope is enabled in the authenticator in Curity, a server error will result. For this reason, it is important to align these two configurations or not to define any when configuring the plug-in in Curity.
 
 Creating a Salesforce Authenticator in Curity
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,15 +87,15 @@ The easiest way to configure a new Salesforce authenticator is using the Curity 
 3. Enter a name (e.g., ``salesforce1``). This name needs to match the URI component in the callback URI set in the Salesforce app.
 4. For the type, pick the ``Salesforce`` option:
 
-    .. figure:: docs/images/identityserver.plugins.authenticators.salesforce-authenticator-type-in-curity.png
+    .. figure:: docs/images/salesforce-authenticator-type-in-curity.png
         :align: center
         :width: 600px
 
-5. On the next page, you can define all of the standard authenticator configuration options like any previous authenticator that should run, the resulting ACR, transformers that should executed, etc. At the bottom of the configuration page, the Salesforce-specific options can be found.
+5. On the next page, you can define all of the standard authenticator configuration options like any previous authenticator that should run, the resulting ACR, transformers that should executed, etc. At the bottom of the configuration page, the Salesforce specific options can be found.
 
         .. note::
 
-        The Salesforce-specific configuration is generated dynamically based on the `configuration model defined in the Java interface <https://github.com/curityio/salesforce-authenticator/blob/master/src/main/java/io/curity/identityserver/plugin/config/SalesforceAuthenticatorPluginConfig.java>`_.
+The Salesforce specific configuration is generated dynamically based on the `configuration model defined in the Java interface <https://github.com/curityio/salesforce-authenticator/blob/master/src/main/java/io/curity/identityserver/plugin/config/SalesforceAuthenticatorPluginConfig.java>`_.
 
 6. Certain required and optional configuration settings may be provided. One of these is the ``HTTP Client`` setting. This is the HTTP client that will be used to communicate with the Salesforce OAuth server's token and user info endpoints. To define this, do the following:
 
@@ -105,7 +103,7 @@ The easiest way to configure a new Salesforce authenticator is using the Curity 
     B. Next to ``HTTP``, click ``New``.
     C. Enter some name (e.g., ``salesforceClient``).
 
-        .. figure:: docs/images/identityserver.plugins.authenticators.salesforce-http-client.png
+        .. figure:: docs/images/salesforce-http-client.png
             :align: center
             :width: 400px
 
@@ -116,7 +114,7 @@ The easiest way to configure a new Salesforce authenticator is using the Curity 
 
 8. In the ``Client ID`` textfield, enter the ``Client ID`` from the Salesforce client app.
 9. Also enter the matching ``Client Secret``.
-10. If you wish to limit the scopes that Curity will request of Salesforce, toggle on the desired scopes (e.g., ``Read Email Address`` or ``Manage Company Page``).
+10. If you wish to limit the scopes that Curity will request of Salesforce, toggle on the desired scopes (e.g., ``Chatter Api`` or ``Custom Permissions``).
 
 Once all of these changes are made, they will be staged, but not committed (i.e., not running). To make them active, click the ``Commit`` menu option in the ``Changes`` menu. Optionally enter a comment in the ``Deploy Changes`` dialogue and click ``OK``.
 
