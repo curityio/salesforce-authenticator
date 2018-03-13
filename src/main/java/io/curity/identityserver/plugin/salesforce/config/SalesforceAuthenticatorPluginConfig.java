@@ -31,7 +31,7 @@ import java.util.Optional;
 @SuppressWarnings("InterfaceNeverImplemented")
 public interface SalesforceAuthenticatorPluginConfig extends Configuration {
 
-	@Description("Client id")
+	@Description("Consumer key")
     String getClientId();
 
     @Description("Secret key")

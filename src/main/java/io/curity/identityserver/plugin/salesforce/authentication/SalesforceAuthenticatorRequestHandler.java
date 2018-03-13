@@ -46,7 +46,7 @@ import static io.curity.identityserver.plugin.salesforce.descriptor.SalesforceAu
 public class SalesforceAuthenticatorRequestHandler implements AuthenticatorRequestHandler<Request>
 {
     private static final Logger _logger = LoggerFactory.getLogger(SalesforceAuthenticatorRequestHandler.class);
-    private static final String AUTHORIZATION_ENDPOINT = "https://www.salesforce.com/oauth2/authorize";
+    private static final String AUTHORIZATION_ENDPOINT = "https://login.salesforce.com/services/oauth2/authorize";
 
     private final SalesforceAuthenticatorPluginConfig _config;
     private final AuthenticatorInformationProvider _authenticatorInformationProvider;
