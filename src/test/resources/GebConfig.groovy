@@ -14,10 +14,14 @@ driver = {
     ].each {
         k, v -> firefoxProfile.setPreference(k, v)
     }
-    File driverDirectory = new File(System.getProperty("webdriver.gecko.driverDir"))
-    String os = System.properties['os.name'].toLowerCase().contains("mac") ? "mac" : "linux"
-    String driverName = "geckodriver-$os-64bit"
-    File driverFile = new File(driverDirectory, driverName)
+    String driverDirectory = System.getProperty("webdriver.gecko.driverDir")
+    File driverFile = new File(new FileNameFinder().getFileNames(driverDirectory, "geckodriver*")
+            .find
+            {
+                def file = new File(it)
+
+                return file.exists() && !file.isDirectory() && file.canExecute() ? it : null
+            } ?: System.getProperty("webdriver.gecko.driver"))
 
     GeckoDriverService service = new GeckoDriverService(driverFile, 4444,
             ImmutableList.of("--log=fatal"), ImmutableMap.of());
