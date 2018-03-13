@@ -26,16 +26,4 @@ class SalesforceAuthenticationTest extends Specification
         then:
         x != 2
     }
-
-    @Ignore
-    def "zoo"() {
-        given:
-        def y = 0;
-
-        when:
-        y++;
-
-        then:
-        y == 0
-    }
 }
