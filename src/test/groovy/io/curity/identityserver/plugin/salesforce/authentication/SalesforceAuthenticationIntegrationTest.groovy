@@ -1,10 +1,11 @@
-package io.curity.identityserver.plugin.salesforce.authentication.browsertests
+package io.curity.identityserver.plugin.salesforce.authentication
 
 import geb.spock.GebReportingSpec
-
+import io.curity.identityserver.plugin.salesforce.authentication.SalesforceLoginPage
+import io.curity.identityserver.plugin.salesforce.authentication.SignupResultPage
 import spock.lang.Requires
 
-class SalesforceAuthenticationTest extends GebReportingSpec {
+class SalesforceAuthenticationIntegrationTest extends GebReportingSpec {
     private static String clientSecretKeyPath = "/profiles/profile{authentication auth:authentication-service}/settings/auth:authentication-service/authenticators/authenticator{salesforce1}/salesforce:salesforce/client-id"
 
     def setupSpec() {

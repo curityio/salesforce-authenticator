@@ -1,4 +1,4 @@
-package io.curity.identityserver.plugin.salesforce.authentication.browsertests
+package io.curity.identityserver.plugin.salesforce.authentication
 
 import geb.Page
 

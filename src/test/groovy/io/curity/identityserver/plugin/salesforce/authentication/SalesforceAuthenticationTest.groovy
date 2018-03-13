@@ -1,5 +1,6 @@
-package io.curity.identityserver.plugin.salesforce.authentication.unit
+package io.curity.identityserver.plugin.salesforce.authentication
 
+import spock.lang.Ignore
 import spock.lang.Specification
 
 class SalesforceAuthenticationTest extends Specification
@@ -26,6 +27,7 @@ class SalesforceAuthenticationTest extends Specification
         x != 2
     }
 
+    @Ignore
     def "zoo"() {
         given:
         def y = 0;

@@ -39,6 +39,31 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.21.0</version>
+                <configuration>
+                    <useFile>false</useFile>
+                    <includes>
+                        <include>**/browser/*Test.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>verify</id>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -67,12 +92,6 @@
             <version>2.4.13</version>
             <!-- TODO: Figure out why test scope doesn't work -->
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.codehaus.groovy.modules.http-builder</groupId>-->
-            <!--<artifactId>http-builder</artifactId>-->
-            <!--<version>0.7.1</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.gebish</groupId>
             <artifactId>geb-core</artifactId>
@@ -107,32 +126,7 @@
             <version>0.13.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-1.2-api</artifactId>
-            <version>2.7</version>
-            <scope>runtime</scope>
-        </dependency>
-        <!--<dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-htmlunit-driver</artifactId>
-            <version>2.48.2</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.httpcomponents</groupId>
-                    <artifactId>httpclient</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.httpcomponents</groupId>
-                    <artifactId>httpcore</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.seleniumhq.selenium</groupId>
-                    <artifactId>selenium-support</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>-->
+        
 
         <!-- TODO: Remove if unused -->
         <dependency> <!-- enables mocking of classes (in addition to interfaces) -->
