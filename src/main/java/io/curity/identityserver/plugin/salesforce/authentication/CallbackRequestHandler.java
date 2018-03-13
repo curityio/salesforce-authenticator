@@ -122,6 +122,10 @@ public class CallbackRequestHandler implements AuthenticatorRequestHandler<Callb
         contextAttributes.add(Attribute.of("user_type", userInfoResponse.get("user_type").toString()));
         subjectAttributes.add(Attribute.of("is_app_installed", (Boolean) userInfoResponse.get("is_app_installed")));
         contextAttributes.add(Attribute.of("access_token", tokenResponseData.get("access_token").toString()));
+        if (_config.isRefreshToken())
+        {
+            contextAttributes.add(Attribute.of("refresh_token", tokenResponseData.get("refresh_token").toString()));
+        }
 
         AuthenticationAttributes attributes = AuthenticationAttributes.of(
                 SubjectAttributes.of(userId, Attributes.of(subjectAttributes)),
