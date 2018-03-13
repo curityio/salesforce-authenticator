@@ -25,6 +25,8 @@ import se.curity.identityserver.sdk.attribute.Attributes;
 import se.curity.identityserver.sdk.attribute.AuthenticationAttributes;
 import se.curity.identityserver.sdk.attribute.ContextAttributes;
 import se.curity.identityserver.sdk.attribute.SubjectAttributes;
+import se.curity.identityserver.sdk.attribute.scim.v2.Name;
+import se.curity.identityserver.sdk.attribute.scim.v2.multivalued.Photo;
 import se.curity.identityserver.sdk.authentication.AuthenticationResult;
 import se.curity.identityserver.sdk.authentication.AuthenticatorRequestHandler;
 import se.curity.identityserver.sdk.errors.ErrorCode;
@@ -96,26 +98,34 @@ public class CallbackRequestHandler implements AuthenticatorRequestHandler<Callb
 
         Map<String, Object> tokenResponseData = redeemCodeForTokens(requestModel);
 
-        List<Attribute> subjectAttributers = new ArrayList<>();
-        @Nullable
-        Object accountId = tokenResponseData.get("account_id");
-        @Nullable
-        Object teamId = tokenResponseData.get("team_id");
-        String id;
-        if (accountId == null)
-        {
-            subjectAttributers.add(Attribute.of("team_id", Objects.toString(teamId)));
-            id = Objects.toString(teamId);
-        }
-        else
-        {
-            subjectAttributers.add(Attribute.of("account_id", Objects.toString(accountId)));
-            id = Objects.toString(accountId);
-        }
+        List<Attribute> subjectAttributes = new ArrayList<>();
+        List<Attribute> contextAttributes = new ArrayList<>();
+
+        String accessToken = tokenResponseData.get("access_token").toString();
+
+        Map<String, Object> userInfoResponse = getUserInfo(accessToken);
+        String userId = userInfoResponse.get("user_id").toString();
+
+        subjectAttributes.add(Attribute.of("subject", userId));
+        subjectAttributes.add(Attribute.of("name", Name.of(userInfoResponse.get("name").toString())));
+        subjectAttributes.add(Attribute.of("nickname", userInfoResponse.get("nickname").toString()));
+        subjectAttributes.add(Attribute.of("organization_id", userInfoResponse.get("organization_id").toString()));
+        subjectAttributes.add(Attribute.of("preferred_username", userInfoResponse.get("preferred_username").toString()));
+        subjectAttributes.add(Attribute.of("email", userInfoResponse.get("email").toString()));
+        subjectAttributes.add(Attribute.of("email_verified", (Boolean) userInfoResponse.get("email_verified")));
+        subjectAttributes.add(Attribute.of("picture", Photo.of(userInfoResponse.get("picture").toString(), false)));
+        subjectAttributes.add(Attribute.of("active", (Boolean) userInfoResponse.get("active")));
+        subjectAttributes.add(Attribute.of("zoneinfo", userInfoResponse.get("zoneinfo").toString()));
+
+        contextAttributes.add(Attribute.of("language", userInfoResponse.get("language").toString()));
+        contextAttributes.add(Attribute.of("locale", userInfoResponse.get("locale").toString()));
+        contextAttributes.add(Attribute.of("user_type", userInfoResponse.get("user_type").toString()));
+        subjectAttributes.add(Attribute.of("is_app_installed", (Boolean) userInfoResponse.get("is_app_installed")));
+        contextAttributes.add(Attribute.of("access_token", tokenResponseData.get("access_token").toString()));
 
         AuthenticationAttributes attributes = AuthenticationAttributes.of(
-                SubjectAttributes.of(id, Attributes.of(subjectAttributers)),
-                ContextAttributes.of(Attributes.of(Attribute.of("access_token", tokenResponseData.get("access_token").toString()))));
+                SubjectAttributes.of(userId, Attributes.of(subjectAttributes)),
+                ContextAttributes.of(Attributes.of(contextAttributes)));
         AuthenticationResult authenticationResult = new AuthenticationResult(attributes);
         return Optional.ofNullable(authenticationResult);
     }
@@ -123,7 +133,7 @@ public class CallbackRequestHandler implements AuthenticatorRequestHandler<Callb
     private Map<String, Object> redeemCodeForTokens(CallbackRequestModel requestModel)
     {
         HttpResponse tokenResponse = getWebServiceClient()
-                .withPath("/oauth2/token")
+                .withPath("/services/oauth2/token")
                 .request()
                 .contentType("application/x-www-form-urlencoded")
                 .body(getFormEncodedBodyFrom(createPostData(_config.getClientId(), _config.getClientSecret(),
@@ -146,17 +156,42 @@ public class CallbackRequestHandler implements AuthenticatorRequestHandler<Callb
         return _json.fromJson(tokenResponse.body(HttpResponse.asString()));
     }
 
+    private Map<String, Object> getUserInfo(String accessToken)
+    {
+        HttpResponse tokenResponse = getWebServiceClient()
+                .withPath("/services/oauth2/userinfo")
+                .request()
+                .accept("application/json")
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .response();
+        int statusCode = tokenResponse.statusCode();
+
+        if (statusCode != 200)
+        {
+            if (_logger.isInfoEnabled())
+            {
+                _logger.info("Got error response from userinfo endpoint: error = {}, {}", statusCode,
+                        tokenResponse.body(HttpResponse.asString()));
+            }
+
+            throw _exceptionFactory.internalServerException(ErrorCode.EXTERNAL_SERVICE_ERROR);
+        }
+
+        return _json.fromJson(tokenResponse.body(HttpResponse.asString()));
+    }
+
     private WebServiceClient getWebServiceClient()
     {
         Optional<HttpClient> httpClient = _config.getHttpClient();
 
         if (httpClient.isPresent())
         {
-            return _webServiceClientFactory.create(httpClient.get()).withHost("api.salesforceapi.com");
+            return _webServiceClientFactory.create(httpClient.get()).withHost("login.salesforce.com");
         }
         else
         {
-            return _webServiceClientFactory.create(URI.create("https://api.salesforceapi.com"));
+            return _webServiceClientFactory.create(URI.create("https://login.salesforce.com"));
         }
     }
 
