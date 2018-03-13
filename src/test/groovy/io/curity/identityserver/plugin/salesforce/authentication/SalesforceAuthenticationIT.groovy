@@ -8,7 +8,7 @@ import static io.curity.identityserver.plugin.salesforce.authentication.Precondi
 
 @Requires( { isIdshAvailable && isSalesForceClientSecretDefined })
 class SalesforceAuthenticationIT extends GebReportingSpec {
-    private static String clientSecretKeyPath = "/profiles/profile{authentication auth:authentication-service}/settings/auth:authentication-service/authenticators/authenticator{salesforce1}/salesforce:salesforce/client-id"
+    private static String clientSecretKeyPath = "/profiles/profile{authentication auth:authentication-service}/settings/auth:authentication-service/authenticators/authenticator{salesforce1}/salesforce:salesforce/client-secret"
 
     def setupSpec() {
         //def p = "idsh -s".execute()
@@ -26,7 +26,7 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
 
     def "Salesforce Login success test"() {
         given: "go to login page"
-        to SalesforceLoginPage
+        to SignupResultPage
 
         when: "I signup as a valid user"
         emailField = "geb@test.com"
@@ -36,8 +36,5 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
 
         then: "I'm at the result page "
         at SignupResultPage
-
-        cleanup:
-        rollback()
     }
 }

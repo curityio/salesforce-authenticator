@@ -2,7 +2,7 @@ package io.curity.identityserver.plugin.salesforce.authentication
 
 import geb.Page
 
-class SalesforceLoginPage {
+class SalesforceLoginPage extends Page {
 }
 
 class SignupResultPage extends Page {
