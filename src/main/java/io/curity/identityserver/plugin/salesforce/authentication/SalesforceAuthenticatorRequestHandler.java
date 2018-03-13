@@ -76,6 +76,7 @@ public class SalesforceAuthenticatorRequestHandler implements AuthenticatorReque
         queryStringArguments.put("state", Collections.singleton(state));
         queryStringArguments.put("response_type", Collections.singleton("code"));
 
+        handleScopes(scopes);
         queryStringArguments.put("scope", Collections.singleton(String.join(" ", scopes)));
 
         _logger.debug("Redirecting to {} with query string arguments {}", AUTHORIZATION_ENDPOINT,
@@ -83,6 +84,27 @@ public class SalesforceAuthenticatorRequestHandler implements AuthenticatorReque
 
         throw _exceptionFactory.redirectException(AUTHORIZATION_ENDPOINT,
                 RedirectStatusCode.MOVED_TEMPORARILY, queryStringArguments, false);
+    }
+
+    private void handleScopes(Set<String> scopes)
+    {
+        addScope(scopes, _config.isApi(), "api");
+        addScope(scopes, _config.isChatterApi(), "chatter_api");
+        addScope(scopes, _config.isCustomPermissions(), "custom_permissions");
+        addScope(scopes, _config.isFullAccess(), "full");
+        addScope(scopes, _config.isIdentityAccess(), "id");
+        addScope(scopes, _config.isOpenidConnect(), "openid");
+        addScope(scopes, _config.isRefreshToken(), "refresh_token");
+        addScope(scopes, _config.isVisualForceAccess(), "visualforce");
+        addScope(scopes, _config.isAllowUseAccessTokenOnWeb(), "web");
+    }
+
+    private void addScope(Set<String> scopes, Boolean scopeConfig, String scope)
+    {
+        if (scopeConfig)
+        {
+            scopes.add(scope);
+        }
     }
 
     private String createRedirectUri()
