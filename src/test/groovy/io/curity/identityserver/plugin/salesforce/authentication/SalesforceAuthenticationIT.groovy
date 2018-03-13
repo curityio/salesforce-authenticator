@@ -26,7 +26,7 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
 
     def "Salesforce Login success test"() {
         given: "go to login page"
-        to SignupResultPage
+        to SalesforceLoginPage
 
         when: "I signup as a valid user"
         emailField = "geb@test.com"

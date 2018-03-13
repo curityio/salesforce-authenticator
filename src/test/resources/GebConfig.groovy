@@ -44,6 +44,6 @@ driver = {
     return testDriver
 }
 
-baseUrl = "https://localhost:8443"
+baseUrl = "https://localhost:8443/test/authn"
 
 reportsDir = new File("target/geb-reports")

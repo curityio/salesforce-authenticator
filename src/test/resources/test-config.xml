@@ -1,23 +1,57 @@
 <config xmlns="http://tail-f.com/ns/config/1.0">
+    <environments xmlns="https://curity.se/ns/conf/base">
+        <environment>
+            <services>
+                <service>
+                    <id>admin</id>
+                    <endpoints>test-authenticate</endpoints>
+                </service>
+            </services>
+        </environment>
+    </environments>
     <profiles xmlns="https://curity.se/ns/conf/base">
         <profile>
             <id>authentication</id>
             <type xmlns:auth="https://curity.se/ns/conf/profile/authentication">auth:authentication-service</type>
             <settings>
                 <authentication-service xmlns="https://curity.se/ns/conf/profile/authentication">
+                    <redirect-url-whitelist>
+                        <url>*</url>
+                    </redirect-url-whitelist>
                     <authenticators>
                         <authenticator>
                             <id>salesforce1</id>
                             <salesforce xmlns="https://curity.se/ns/ext-conf/salesforce">
                                 <client-id>salesforce1</client-id>
-                                <!--<client-secret>set programmatically</client-secret>-->
                                 <!--<full-access>true</full-access>-->
                                 <!--<chatter-api>true</chatter-api>-->
                             </salesforce>
                         </authenticator>
                     </authenticators>
+                    <protocols>
+                        <protocol>
+                            <id>simple1</id>
+                            <simple-api>
+                                <signing-key>default-signing-key</signing-key>
+                                <signature-algorithm>RS256</signature-algorithm>
+                            </simple-api>
+                        </protocol>
+                    </protocols>
+                    <service-providers>
+                        <service-provider>
+                            <id>se.curity</id>
+                            <target-url>https://localhost:7777/auth-done</target-url>
+                        </service-provider>
+                    </service-providers>
                 </authentication-service>
             </settings>
+            <endpoints>
+                <endpoint>
+                    <id>test-authenticate</id>
+                    <uri>/test/authn</uri>
+                    <endpoint-kind>auth-authentication</endpoint-kind>
+                </endpoint>
+            </endpoints>
         </profile>
     </profiles>
 </config>
