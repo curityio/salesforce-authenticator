@@ -31,7 +31,7 @@ class SalesforceLoginPage extends Page {
 }
 
 class SalesforceConsentPage extends Page {
-    static url = "https://eu12.salesforce.com"
+    static url = "https://eu12.salesforce.com?locale=us"
 
     static at = {
         title == "Allow Access? | Salesforce"
@@ -77,7 +77,7 @@ class CurityLogoutPage extends Page {
 }
 
 class SalesforceLogoutPage extends Page {
-    static url = "https://login.salesforce.com"
+    static url = "https://login.salesforce.com?locale=us"
 
     static at = {
         title.endsWith("Login | Salesforce")
