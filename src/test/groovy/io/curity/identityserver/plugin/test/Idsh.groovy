@@ -32,7 +32,7 @@ final class Idsh {
         checkState(exitValue == 0, "Idsh exited with a non-zero exit status of $exitValue")
     }
 
-    void setValue(String path, String value) {
+    void setValue(String path, Object value) {
         def idsh = "idsh -s".execute()
         idsh.out << """
             configure
