@@ -20,6 +20,8 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
 
     def setupSpec() {
         def salesforceClientSecret = getenv("SALESFORCE_CLIENT_SECRET")
+        // TODO: remove test profile before setting up spec
+        //idsh.delete("profiles profile test-authentication-profile authentication-service")
         idsh.loadTestConfig("/test-config.xml", """
             set $SALESFORCE_AUTHENTICATOR_PATH client-secret $salesforceClientSecret 
         """)
