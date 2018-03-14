@@ -97,6 +97,7 @@
             <groupId>se.curity.identityserver</groupId>
             <artifactId>identityserver.sdk</artifactId>
             <version>${project.curityVersion}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -105,6 +106,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Test dependencies -->
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
@@ -139,6 +141,12 @@
             <groupId>org.apache.ant</groupId>
             <artifactId>ant</artifactId>
             <version>1.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.6-jre</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
