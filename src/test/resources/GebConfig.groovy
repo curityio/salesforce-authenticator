@@ -32,7 +32,7 @@ driver = {
     options.setLogLevel(FirefoxDriverLogLevel.ERROR)
 
     def testDriver = new FirefoxDriver(service, options)
-
+    
     Runtime.addShutdownHook {
         try {
             testDriver.quit()
@@ -44,6 +44,6 @@ driver = {
     return testDriver
 }
 
-baseUrl = "https://localhost:8443/test/authn"
+baseUrl = "https://localhost:8443/"
 
 reportsDir = new File("target/geb-reports")

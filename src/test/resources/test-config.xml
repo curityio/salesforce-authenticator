@@ -3,7 +3,7 @@
         <environment>
             <services>
                 <service>
-                    <id>admin</id>
+                    <id>TestServer1</id>
                     <endpoints>test-authenticate</endpoints>
                 </service>
             </services>
@@ -11,7 +11,7 @@
     </environments>
     <profiles xmlns="https://curity.se/ns/conf/base">
         <profile>
-            <id>authentication</id>
+            <id>test-authentication-profile</id>
             <type xmlns:auth="https://curity.se/ns/conf/profile/authentication">auth:authentication-service</type>
             <settings>
                 <authentication-service xmlns="https://curity.se/ns/conf/profile/authentication">
@@ -22,7 +22,7 @@
                         <authenticator>
                             <id>salesforce1</id>
                             <salesforce xmlns="https://curity.se/ns/ext-conf/salesforce">
-                                <client-id>salesforce1</client-id>
+                                <client-id>3MVG95NPsF2gwOiMQdpMz5hJcr63h9we6.2zesT1cOPqf1JU.ifbm7a8DUACX.nyhXWs_HAj21RfuNaFZVmil</client-id>
                                 <!--<full-access>true</full-access>-->
                                 <!--<chatter-api>true</chatter-api>-->
                             </salesforce>

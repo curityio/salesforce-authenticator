@@ -2,16 +2,27 @@ package io.curity.identityserver.plugin.salesforce.authentication
 
 import geb.Page
 
-class SalesforceLoginPage extends Page {
-    static url = "/salesforce1"
+class StartLoginPage extends Page {
+    static url = "/test/authn/salesforce1"
 }
 
-class SignupResultPage extends Page {
+class SalesforceLoginPage extends Page {
+    static url = "https://login.salesforce.com"
 
-    static url = "/create"
-    static at = { title == "Sample App Sign-up Result Page" }
+    static at = {
+        title.endsWith("| Salesforce")
+    }
     static content = {
-        heading { $("h1").text() }
+        usernameField { $("#username") }
+        passwordField { $("#password") }
+        loginButton { $("#Login") }
+        
+        validation_message {$("span[class*='LV_validation_message']").text()}
     }
 
+    void login(username, password) {
+        usernameField = username
+        passwordField = password
+        loginButton.click()
+    }
 }
