@@ -1,6 +1,5 @@
 package io.curity.identityserver.plugin.salesforce.authentication
 
-import spock.lang.Ignore
 import spock.lang.Specification
 
 class SalesforceAuthenticationTest extends Specification
