@@ -1,22 +1,23 @@
 package io.curity.identityserver.plugin.salesforce.authentication
 
 import geb.spock.GebReportingSpec
+import io.curity.identityserver.test.Idsh
 import org.junit.AssumptionViolatedException
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Unroll
-import io.curity.identityserver.test.Idsh
 
-import static io.curity.identityserver.test.TestRequirements.isEnvironmentVariableSet
 import static io.curity.identityserver.test.TestRequirements.getIsIdshAvailable
+import static io.curity.identityserver.test.TestRequirements.isEnvironmentVariableSet
 import static java.lang.System.getenv
 
-@Requires( { isIdshAvailable && isEnvironmentVariableSet("SALESFORCE_CLIENT_SECRET") })
+@Requires({ isIdshAvailable && isEnvironmentVariableSet("SALESFORCE_CLIENT_SECRET") })
 class SalesforceAuthenticationIT extends GebReportingSpec {
     @Shared
     Idsh idsh = new Idsh()
 
-    private static final SALESFORCE_AUTHENTICATOR_PATH = "profiles profile test-authentication-profile authentication-service settings authentication-service authenticators authenticator salesforce1 salesforce"
+    private static
+    final SALESFORCE_AUTHENTICATOR_PATH = "profiles profile test-authentication-profile authentication-service settings authentication-service authenticators authenticator salesforce1 salesforce"
 
     def setupSpec() {
         def salesforceClientSecret = getenv("SALESFORCE_CLIENT_SECRET")
@@ -39,8 +40,10 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
         at SalesforceLoginPage
     }
 
-    @Requires({ isEnvironmentVariableSet("SALESFORCE_USERNAME") &&
-            isEnvironmentVariableSet("SALESFORCE_PASSWORD") })
+    @Requires({
+        isEnvironmentVariableSet("SALESFORCE_USERNAME") &&
+                isEnvironmentVariableSet("SALESFORCE_PASSWORD")
+    })
     @Unroll
     def "Set some scope"() {
         given:
@@ -61,7 +64,7 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
         page.login(userName, password)
 
         then:
-        if(isAt(SalesforceVerifyPage)){
+        if (isAt(SalesforceVerifyPage)) {
             throw new AssumptionViolatedException("Unrecognized browser, please verify your identity by whitelisting your IP. For more info, see : https://help.salesforce.com/articleView?id=security_networkaccess.htm&type=5")
         }
 
