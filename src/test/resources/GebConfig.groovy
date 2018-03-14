@@ -1,5 +1,6 @@
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
+import org.openqa.selenium.SessionNotCreatedException
 import org.openqa.selenium.firefox.*
 import org.openqa.selenium.remote.UnreachableBrowserException
 
@@ -27,7 +28,7 @@ driver = {
             ImmutableList.of("--log=fatal"), ImmutableMap.of());
     FirefoxOptions options = new FirefoxOptions()
 
-    service.start();
+    service.start()
     options.profile = firefoxProfile
     options.setLogLevel(FirefoxDriverLogLevel.ERROR)
 
@@ -35,8 +36,9 @@ driver = {
     
     Runtime.addShutdownHook {
         try {
+            //if (testDriver.isOpen)
             testDriver.quit()
-        } catch (UnreachableBrowserException ignored) {
+        } catch (UnreachableBrowserException | SessionNotCreatedException ignored) {
             println("Browser is gone, so test driver doesn't need to be shutdown")
         }
     }
