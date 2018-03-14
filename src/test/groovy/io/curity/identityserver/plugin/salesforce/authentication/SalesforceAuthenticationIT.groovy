@@ -4,6 +4,7 @@ import geb.spock.GebReportingSpec
 import io.curity.identityserver.plugin.test.Idsh
 import spock.lang.Requires
 import spock.lang.Shared
+import spock.lang.Unroll
 
 import static io.curity.identityserver.plugin.test.TestRequirements.isEnvironmentVariableSet
 import static io.curity.identityserver.plugin.test.TestRequirements.isIdshAvailable
@@ -37,11 +38,12 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
 
     @Requires({ isEnvironmentVariableSet("SALESFORCE_USERNAME") &&
             isEnvironmentVariableSet("SALESFORCE_PASSWORD") })
+    @Unroll
     def "Set some scope"() {
         given:
         def userName = getenv("SALESFORCE_USERNAME")
         def password = getenv("SALESFORCE_PASSWORD")
-        idsh.setValue("$SALESFORCE_AUTHENTICATOR_PATH full", true)
+        idsh.setValue("$SALESFORCE_AUTHENTICATOR_PATH $scope", true)
 
         when: "go to login page"
         to StartLoginPage, serviceProviderId: "se.curity"
@@ -66,5 +68,13 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
         waitFor { at LoginDonePage }
         assert page instanceof LoginDonePage
         page.subject == "teddie.curity@gmail.com"
+
+        cleanup:
+        idsh.setValue("$SALESFORCE_AUTHENTICATOR_PATH $scope", false)
+
+        where:
+        scope << [
+                "full", "api"
+        ]
     }
 }
