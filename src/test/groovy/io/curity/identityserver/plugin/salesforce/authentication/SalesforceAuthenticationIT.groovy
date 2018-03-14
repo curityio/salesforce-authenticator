@@ -1,7 +1,7 @@
 package io.curity.identityserver.plugin.salesforce.authentication
 
 import geb.spock.GebReportingSpec
-
+import org.junit.AssumptionViolatedException
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Unroll
@@ -59,6 +59,10 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
         page.login(userName, password)
 
         then:
+        if(isAt(SalesforceVerifyPage)){
+            throw new AssumptionViolatedException("Unrecognized browser, please verify your identity by whitelisting your IP. For more info, see : https://help.salesforce.com/articleView?id=security_networkaccess.htm&type=5")
+        }
+
         if (isAt(SalesforceConsentPage)) {
             assert page instanceof SalesforceConsentPage
 

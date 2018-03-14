@@ -18,7 +18,7 @@ class SalesforceLoginPage extends Page {
         usernameField { $("#username") }
         passwordField { $("#password") }
         loginButton { $("#Login") }
-        
+
         validation_message {$("span[class*='LV_validation_message']").text()}
     }
 
@@ -66,10 +66,20 @@ class LoginDonePage extends Page {
     }
 }
 
+class SalesforceVerifyPage extends Page {
+    static at = {
+        title == "Verify Your Identity | Salesforce"
+    }
+}
+
 class CurityLogoutPage extends Page {
     static url = "/logout"
 }
 
 class SalesforceLogoutPage extends Page {
     static url = "https://login.salesforce.com"
+
+    static at = {
+        title.endsWith("Login | Salesforce")
+    }
 }
