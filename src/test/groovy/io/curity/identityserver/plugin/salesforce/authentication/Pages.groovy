@@ -65,3 +65,11 @@ class LoginDonePage extends Page {
         subject { jsonBody.subject }
     }
 }
+
+class CurityLogoutPage extends Page {
+    static url = "/logout"
+}
+
+class SalesforceLogoutPage extends Page {
+    static url = "https://login.salesforce.com"
+}

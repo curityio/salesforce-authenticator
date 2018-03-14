@@ -64,17 +64,15 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
             page.allow()
         }
 
-        then:
-        waitFor { at LoginDonePage }
-        assert page instanceof LoginDonePage
-        page.subject == "teddie.curity@gmail.com"
-
         cleanup:
         idsh.setValue("$SALESFORCE_AUTHENTICATOR_PATH $scope", false)
+        to CurityLogoutPage
+        to SalesforceLogoutPage
+        waitFor { at SalesforceLogoutPage }
 
         where:
         scope << [
-                "full", "api"
+                "id", "api"
         ]
     }
 }

@@ -3,7 +3,7 @@
         <environment>
             <services>
                 <service>
-                    <id>TestServer1</id>
+                    <id>admin</id>
                     <endpoints>test-authenticate</endpoints>
                 </service>
             </services>
