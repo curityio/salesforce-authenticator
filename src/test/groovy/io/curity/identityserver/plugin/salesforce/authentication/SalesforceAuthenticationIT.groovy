@@ -1,13 +1,14 @@
 package io.curity.identityserver.plugin.salesforce.authentication
 
 import geb.spock.GebReportingSpec
-import io.curity.identityserver.plugin.test.Idsh
+
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Unroll
+import io.curity.identityserver.test.Idsh
 
-import static io.curity.identityserver.plugin.test.TestRequirements.isEnvironmentVariableSet
-import static io.curity.identityserver.plugin.test.TestRequirements.isIdshAvailable
+import static io.curity.identityserver.test.TestRequirements.isEnvironmentVariableSet
+import static io.curity.identityserver.test.TestRequirements.getIsIdshAvailable
 import static java.lang.System.getenv
 
 @Requires( { isIdshAvailable && isEnvironmentVariableSet("SALESFORCE_CLIENT_SECRET") })
