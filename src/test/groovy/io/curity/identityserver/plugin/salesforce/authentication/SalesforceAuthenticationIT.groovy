@@ -1,24 +1,27 @@
 package io.curity.identityserver.plugin.salesforce.authentication
 
 import geb.spock.GebReportingSpec
+import io.curity.identityserver.plugin.test.Idsh
 import spock.lang.Requires
+import spock.lang.Shared
 
 import static io.curity.identityserver.plugin.test.TestRequirements.isEnvironmentVariableSet
 import static io.curity.identityserver.plugin.test.TestRequirements.isIdshAvailable
-import static io.curity.identityserver.plugin.test.Idsh.loadTestConfig
-import static io.curity.identityserver.plugin.test.Idsh.rollback
 
 @Requires( { isIdshAvailable && isEnvironmentVariableSet("SALESFORCE_CLIENT_SECRET") })
 class SalesforceAuthenticationIT extends GebReportingSpec {
+    @Shared
+    Idsh idsh = new Idsh()
+
     def setupSpec() {
         def salesforceClientSecret = System.getenv("SALESFORCE_CLIENT_SECRET")
-        loadTestConfig("/test-config.xml", """
+        idsh.loadTestConfig("/test-config.xml", """
             set profiles profile test-authentication-profile authentication-service settings authentication-service authenticators authenticator salesforce1 salesforce client-secret $salesforceClientSecret
         """)
     }
 
     def cleanupSpec() {
-        rollback()
+        idsh.rollback()
     }
 
     def "Salesforce Login success test"() {

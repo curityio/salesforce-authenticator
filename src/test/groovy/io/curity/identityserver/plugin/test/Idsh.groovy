@@ -5,10 +5,12 @@ import java.util.concurrent.TimeUnit
 import static com.google.common.base.Preconditions.checkState
 
 final class Idsh {
-    private Idsh() { }
+    Idsh() { }
 
-    static void loadTestConfig(String resourceFile, String extraCommands = "") {
-        def tempFile = copyTestConfigToTempFile(resourceFile)
+    private int rollbackCount = 0
+
+    void loadTestConfig(String resourceFileName, String extraCommands = "") {
+        def tempFile = copyTestConfigToTempFile(resourceFileName)
         def idsh = "idsh -s".execute()
         idsh.out << """
                 configure
@@ -18,7 +20,8 @@ final class Idsh {
                 quit
                 quit
             """
-        checkState(idsh.waitFor(2, TimeUnit.SECONDS), "Idsh didn't shutdown in a timely manner")
+
+        waitForIdshToQuit(idsh)
         
         def exitValue = idsh.exitValue()
 
@@ -29,21 +32,41 @@ final class Idsh {
         checkState(exitValue == 0, "Idsh exited with a non-zero exit status of $exitValue")
     }
 
-    static void rollback() {
+    void setValue(String path, String value) {
+        def idsh = "idsh -s".execute()
+        idsh.out << """
+            configure
+            set $path $value
+            commit
+            quit
+            quit
+        """
+
+        waitForIdshToQuit(idsh)
+        rollbackCount++
+    }
+
+    void rollback() {
         def idsh = "idsh -s".execute()
         idsh << """
                 configure
-                rollback 0
+                rollback $rollbackCount
                 commit
                 quit
                 quit
             """
+
+        waitForIdshToQuit(idsh)
     }
 
-    private static String copyTestConfigToTempFile(String resoureFile) {
+    private static void waitForIdshToQuit(Process idsh) {
+        checkState(idsh.waitFor(2, TimeUnit.SECONDS), "Idsh didn't shutdown in a timely manner")
+    }
+
+    private static String copyTestConfigToTempFile(String resourceFileName) {
         def temp = File.createTempFile("temp", ".scrap");
         temp.deleteOnExit()
-        temp << getClass().getResourceAsStream(resoureFile)
+        temp << getClass().getResourceAsStream(resourceFileName)
         temp.absolutePath
     }
 }
