@@ -3,15 +3,13 @@ package io.curity.identityserver.plugin.salesforce.authentication
 import geb.spock.GebReportingSpec
 import spock.lang.Requires
 
-import static io.curity.identityserver.plugin.salesforce.authentication.Preconditions.getIsSalesForceClientSecretDefined
-import static io.curity.identityserver.plugin.salesforce.authentication.Preconditions.isIdshAvailable
+import static io.curity.identityserver.plugin.test.TestRequirements.isEnvironmentVariableSet
+import static io.curity.identityserver.plugin.test.TestRequirements.isIdshAvailable
 import static io.curity.identityserver.plugin.test.Idsh.loadTestConfig
 import static io.curity.identityserver.plugin.test.Idsh.rollback
 
-@Requires( { isIdshAvailable && isSalesForceClientSecretDefined })
+@Requires( { isIdshAvailable && isEnvironmentVariableSet("SALESFORCE_CLIENT_SECRET") })
 class SalesforceAuthenticationIT extends GebReportingSpec {
-    private static String clientSecretKeyPath = "/profiles/profile{authentication auth:authentication-service}/settings/auth:authentication-service/authenticators/authenticator{salesforce1}/salesforce:salesforce/client-secret"
-
     def setupSpec() {
         def salesforceClientSecret = System.getenv("SALESFORCE_CLIENT_SECRET")
         loadTestConfig("/test-config.xml", """

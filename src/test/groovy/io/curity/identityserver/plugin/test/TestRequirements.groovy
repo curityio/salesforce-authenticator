@@ -1,15 +1,15 @@
-package io.curity.identityserver.plugin.salesforce.authentication
+package io.curity.identityserver.plugin.test
 
 import java.util.concurrent.TimeUnit
 
-class Preconditions {
-        static boolean getIsSalesForceClientSecretDefined() {
-            def secret = System.getenv("SALESFORCE_CLIENT_SECRET")
+class TestRequirements {
+        static boolean isEnvironmentVariableSet(String name) {
+            def secret = System.getenv(name)
             def isSet = secret != null && !secret.isEmpty()
 
             if (!isSet) {
-                System.err.println("SALESFORCE_CLIENT_SECRET environment variable is not set. " +
-                        "Set it to the secret of the Salesforce OAuth client and retry the test")
+                System.err.println("$name environment variable is not set. " +
+                        "Set it and retry the test")
             }
 
             return isSet
