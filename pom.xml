@@ -110,7 +110,7 @@
         <dependency>
             <groupId>io.curity.identityserver.test</groupId>
             <artifactId>test-commons</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
