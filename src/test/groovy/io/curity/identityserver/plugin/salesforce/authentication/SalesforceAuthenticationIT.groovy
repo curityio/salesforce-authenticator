@@ -54,10 +54,8 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
         when: "go to login page"
         to StartLoginPage, serviceProviderId: "se.curity"
 
-        and:
-        at SalesforceLoginPage
-
         then:
+        waitFor {at SalesforceLoginPage}
         assert page instanceof SalesforceLoginPage
 
         when:
@@ -73,6 +71,17 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
 
             page.allow()
         }
+
+        and:
+        waitFor { at LoginDonePage }
+        assert page instanceof LoginDonePage
+        assert page.jsonBody.sessionId != null
+        assert page.jsonBody.iat != null
+        assert page.jsonBody.exp != null
+        assert page.jsonBody.subject != null
+        assert page.jsonBody.subject.subject != null
+        assert page.jsonBody.subject.name != null
+
 
         cleanup:
         idsh.setValue("$SALESFORCE_AUTHENTICATOR_PATH $scope", false)
