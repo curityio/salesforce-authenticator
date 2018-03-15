@@ -75,12 +75,13 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
         then:
         waitFor {at LoginDonePage}
         assert page instanceof LoginDonePage
-        assert page.jsonBody.sessionId != null
-        assert page.jsonBody.iat != null
-        assert page.jsonBody.exp != null
-        assert page.jsonBody.subject != null
-        assert page.jsonBody.subject.subject != null
-        assert page.jsonBody.subject.name != null
+        page.jsonBody.sessionId
+        page.jsonBody.iat
+        page.jsonBody.exp
+        page.jsonBody.subject
+        page.jsonBody.subject.subject
+        page.jsonBody.subject.name
+        page.jsonBody.sub != 'fail'
 
 
         cleanup:
