@@ -73,7 +73,7 @@ class SalesforceVerifyPage extends Page {
 }
 
 class CurityLogoutPage extends Page {
-    static url = "/logout"
+    static url = "/test/authn/logout"
 }
 
 class SalesforceLogoutPage extends Page {

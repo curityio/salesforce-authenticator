@@ -72,8 +72,8 @@ class SalesforceAuthenticationIT extends GebReportingSpec {
             page.allow()
         }
 
-        and:
-        waitFor { at LoginDonePage }
+        then:
+        waitFor {at LoginDonePage}
         assert page instanceof LoginDonePage
         assert page.jsonBody.sessionId != null
         assert page.jsonBody.iat != null
