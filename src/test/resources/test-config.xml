@@ -3,7 +3,7 @@
         <environment>
             <services>
                 <service>
-                    <id>TestServer1</id>
+                    <id>admin</id>
                     <endpoints>test-authenticate</endpoints>
                 </service>
             </services>
@@ -40,7 +40,7 @@
                     <service-providers>
                         <service-provider>
                             <id>se.curity</id>
-                            <target-url>https://localhost:7777/auth-done</target-url>
+                            <target-url>http://127.0.0.1:8100/auth-done</target-url>
                         </service-provider>
                     </service-providers>
                 </authentication-service>

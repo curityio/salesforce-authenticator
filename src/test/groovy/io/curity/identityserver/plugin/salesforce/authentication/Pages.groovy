@@ -18,7 +18,7 @@ class SalesforceLoginPage extends Page {
         usernameField { $("#username") }
         passwordField { $("#password") }
         loginButton { $("#Login") }
-        
+
         validation_message {$("span[class*='LV_validation_message']").text()}
     }
 
@@ -31,7 +31,7 @@ class SalesforceLoginPage extends Page {
 }
 
 class SalesforceConsentPage extends Page {
-    static url = "https://eu12.salesforce.com"
+    static url = "https://eu12.salesforce.com?locale=us"
 
     static at = {
         title == "Allow Access? | Salesforce"
@@ -63,5 +63,23 @@ class LoginDonePage extends Page {
 
     static content = {
         subject { jsonBody.subject }
+    }
+}
+
+class SalesforceVerifyPage extends Page {
+    static at = {
+        title == "Verify Your Identity | Salesforce"
+    }
+}
+
+class CurityLogoutPage extends Page {
+    static url = "/test/authn/logout"
+}
+
+class SalesforceLogoutPage extends Page {
+    static url = "https://login.salesforce.com?locale=us"
+
+    static at = {
+        title.endsWith("Login | Salesforce")
     }
 }
