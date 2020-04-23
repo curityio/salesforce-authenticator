@@ -12,7 +12,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.curityVersion>2.4.0</project.curityVersion>
+        <project.curityVersion>5.0.0</project.curityVersion>
     </properties>
 
     <build>
