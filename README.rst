@@ -4,11 +4,12 @@ Salesforce Authenticator Plug-in
 .. image:: https://travis-ci.org/curityio/salesforce-authenticator.svg?branch=master
        :target: https://travis-ci.org/curityio/salesforce-authenticator
        
-.. image:: https://curity.io/assets/images/badges/salesforce-authenticator-quality.svg
-       :target: https://curity.io/resources/code-examples/status/
-       
-.. image:: https://curity.io/assets/images/badges/salesforce-authenticator-availability.svg
-       :target: https://curity.io/resources/code-examples/status/  
+.. image:: https://img.shields.io/badge/quality-demo-red
+    :target: https://curity.io/resources/code-examples/status/
+
+.. image:: https://img.shields.io/badge/availability-source-blue
+    :target: https://curity.io/resources/code-examples/status/
+
 
 This project provides an opens source Salesforce Authenticator plug-in for the Curity Identity Server. This allows an administrator to add functionality to Curity which will then enable end users to login using their Salesforce credentials. The app that integrates with Curity may also be configured to receive the Salesforce access token and refresh token, allowing it to manage resources in Salesforce.
 
