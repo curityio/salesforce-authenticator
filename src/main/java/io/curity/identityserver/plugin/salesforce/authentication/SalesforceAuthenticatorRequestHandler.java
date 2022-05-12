@@ -41,6 +41,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import static io.curity.identityserver.plugin.salesforce.authentication.RedirectUriUtils.createRedirectUri;
 import static io.curity.identityserver.plugin.salesforce.descriptor.SalesforceAuthenticatorPluginDescriptor.CALLBACK;
 
 public class SalesforceAuthenticatorRequestHandler implements AuthenticatorRequestHandler<Request>
@@ -64,7 +65,7 @@ public class SalesforceAuthenticatorRequestHandler implements AuthenticatorReque
     {
         _logger.debug("GET request received for authentication");
 
-        String redirectUri = createRedirectUri();
+        String redirectUri = createRedirectUri(_authenticatorInformationProvider, _exceptionFactory);
         String state = UUID.randomUUID().toString();
         Map<String, Collection<String>> queryStringArguments = new LinkedHashMap<>(5);
         Set<String> scopes = new LinkedHashSet<>(7);
@@ -104,20 +105,6 @@ public class SalesforceAuthenticatorRequestHandler implements AuthenticatorReque
         if (scopeConfig)
         {
             scopes.add(scope);
-        }
-    }
-
-    private String createRedirectUri()
-    {
-        try
-        {
-            URI authUri = _authenticatorInformationProvider.getFullyQualifiedAuthenticationUri();
-
-            return new URL(authUri.toURL(), authUri.getPath() + "/" + CALLBACK).toString();
-        } catch (MalformedURLException e)
-        {
-            throw _exceptionFactory.internalServerException(ErrorCode.INVALID_REDIRECT_URI,
-                    "Could not create redirect URI");
         }
     }
 
